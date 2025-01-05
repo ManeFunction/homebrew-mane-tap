@@ -1,14 +1,18 @@
 class Romlm < Formula
   desc "ROMs library management tool"
   homepage "https://github.com/ManeFunction/romlm"
-  url "https://github.com/ManeFunction/romlm/releases/download/v1.0.1/romlm-1.0.1.tar.gz"
-  sha256 "2acc3990777c08cd9dc3759b944ffecdb349a41c997ed50916c66f2c1656e934"
+  url "https://github.com/ManeFunction/romlm/releases/download/v1.0.2/romlm-1.0.2.tar.gz"
+  sha256 "ea03f8cc030fb626f6dd58f6f3fad779028b8e0667192251ce453da6850e2b04"
   license "MIT"
 
   depends_on "python@3.12"
 
   def install
-    system "pip", "install", ".", "--prefix=#{prefix}"
+    system "python3.12", "-m", "venv", "--clear", "--copies", libexec.to_s
+    system "#{libexec}/bin/python", "-m", "ensurepip"
+    system "#{libexec}/bin/pip", "install", "--upgrade", "pip", "setuptools", "wheel"
+    system "#{libexec}/bin/pip", "install", "."
+    bin.install_symlink "#{libexec}/bin/romlm" => "romlm"
   end
 
   test do
